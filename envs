@@ -1,0 +1,35 @@
+# Author: Imam Omar Mochtar (iomarmochtar@gmail.com)
+# Version: 0.1
+
+BACKUP_PATH=$1
+# folder name
+DATE=`date +"%d_%m_%Y"`
+DEST="$BACKUP_PATH/$DATE"
+# format that will be used
+FORMAT='tgz'
+ZPATH='/opt/zimbra'
+ZMBOX="$ZPATH/bin/zmmailbox"
+ZMPROV="$ZPATH/bin/zmprov"
+# argument that will be added while restoring
+RESTORE_ARGS='&resolve=skip'
+# argument that will be added while backuping 
+BACKUP_ARGS=''
+TIMEOUT=2
+# list of users, if it's empty then all user data will be backup. use space as separators
+USERS=''
+# set to y if you want also backup ldap data
+LDAP_BACKUP='y'
+ZMSLAP="$ZPATH/libexec/zmslapcat"
+
+
+### BASIC VALIDATION BEGIN
+if [ ! -f $ZMPROV ] || [ ! -f $ZMBOX ]; then
+    echo "Required file is missing, either $ZMPROV or $ZMBOX"
+    exit 1
+fi
+
+if [ "$BACKUP_PATH"x == "x" ]; then
+    echo "You must set backup path as first argument"
+    exit 1
+fi
+### BASIC VALIDATION END 
